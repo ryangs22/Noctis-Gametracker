@@ -141,7 +141,7 @@ def update_user_me(
 # ==========================================
 def send_recovery_email(to_email: str, code: str):
     sender_email = "ryansilva132020@gmail.com"  
-    sender_password = "" 
+    sender_password = "ikyjrtgjimthpfzd" 
 
     msg = MIMEMultipart()
     msg['From'] = f"NOCTIS <{sender_email}>"
