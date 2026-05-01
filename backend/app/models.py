@@ -1,14 +1,32 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Float, Text
 from sqlalchemy.orm import relationship, validates
+from abc import ABC, abstractmethod
 from .database import Base
 
-class User(Base):
+class IExportavel(ABC):
+    @abstractmethod
+    def exportar_dados(self):
+        """Método que toda classe que assinar este contrato deve ter"""
+        pass
+
+def processar_exportacao(entidade: IExportavel):
+    return entidade.exportar_dados()
+
+# ==========================================
+# MODELOS DO BANCO DE DADOS
+# ==========================================
+
+class User(Base, IExportavel):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     avatar = Column(Text, nullable=True)
+
+    # IMPLEMENTAÇÃO DO POLIMORFISMO
+    def exportar_dados(self):
+        return {"tipo": "Jogador", "nome": self.username, "contato": self.email}
 
 class RecoveryCode(Base):
     __tablename__ = "recovery_codes"
@@ -17,24 +35,19 @@ class RecoveryCode(Base):
     code = Column(String)
     expires_at = Column(String)
 
-# 1. HERANÇA: A nossa classe UserGame "herda" as características da classe 'Base' do SQLAlchemy.
-class UserGame(Base):
+class UserGame(Base, IExportavel):
     __tablename__ = "user_games"
 
     id = Column(Integer, primary_key=True, index=True)
-    
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    
     game_id = Column(String, nullable=False) 
-
     titulo = Column(String, nullable=True) 
     capa = Column(String, nullable=True)
     dados_jogo = Column(Text, nullable=True)
-    
     status_principal = Column(String, default="Quero Jogar") 
     favorito = Column(Boolean, default=False)
     
-    # Atributo "privado" para aplicar o encapsulamento
+    # ENCAPSULAMENTO: Atributo "privado"
     _horas_jogadas = Column("horas_jogadas", Float, default=0.0)
 
     nota_geral = Column(Float, nullable=True) 
@@ -43,10 +56,9 @@ class UserGame(Base):
     conquistas = Column(String, nullable=True) 
     conquistas_personalizadas = Column(String, nullable=True)
 
-    # Relacionamento (Diz para o banco que esse jogo pertence a um User)
     user = relationship("User", backref="meus_jogos")
 
-    # 2. ENCAPSULAMENTO: Protegendo o dado de horas jogadas. 
+    # ENCAPSULAMENTO: Métodos Get, Set e Validação Interceptadora
     @validates('_horas_jogadas')
     def validate_horas(self, key, value):
         if value < 0:
@@ -61,7 +73,11 @@ class UserGame(Base):
     def horas_jogadas(self, value):
         self._horas_jogadas = value
 
-class Lista(Base):
+    # IMPLEMENTAÇÃO DO POLIMORFISMO
+    def exportar_dados(self):
+        return {"tipo": "Jogo na Biblioteca", "titulo": self.titulo, "horas": self.horas_jogadas}
+
+class Lista(Base, IExportavel):
     __tablename__ = "listas"
     
     id = Column(Integer, primary_key=True, index=True)
@@ -71,3 +87,7 @@ class Lista(Base):
     descricao = Column(String, nullable=True)
     jogos = Column(Text, default="[]") 
     criado_em = Column(Float)
+
+    # IMPLEMENTAÇÃO DO POLIMORFISMO
+    def exportar_dados(self):
+        return {"tipo": "Lista Customizada", "nome_lista": self.nome, "jogos_contidos": self.jogos}
