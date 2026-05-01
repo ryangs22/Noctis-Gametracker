@@ -64,11 +64,16 @@ Veja seus dados em tempo real: jogos na biblioteca, gênero preferido, horas jog
 Exibe os jogos mais adicionados no último ano e o Top 5 mais bem avaliados, com dados ao vivo da RAWG.
 
 **10. 📖 Descrição dos Jogos:**
-Cada jogo exibe sinopse traduzida para PT-BR automaticamente, data de lançamento completa, nota da comunidade e plataformas disponíveis.
+Cada jogo exibe sinopse traduzida para PT-BR automaticamente (API mymemory pode falhar em alguns casos sendo limitada a um número específico de caracteres), data de lançamento completa, nota da comunidade e plataformas disponíveis.
 
 **11. ✏️ Mudança de Dados do Usuário:**
 Na aba de Perfil, o usuário pode alterar nome, e-mail, senha e foto de perfil — com sincronização imediata no banco de dados e na interface.
 
+---
+## 📄 Documentação Do Projeto
+
+Segue documentação em arquivo PDF dos detalhes do projeto: Descrição, Stack utilizada, 11 Funcionlidades aplicadas com exibição direta via código e Aplicação, Utilização e Motivação das Orientações a Objetos (Herança, Herança Abstrata, Polimorfismo e Encapsulamento):
+https://drive.google.com/file/d/1XPNl6B6HocJony--JJRfUWtVZGWZIxq4/view?usp=drive_link
 ---
 
 ## 🚀 Como Executar o Projeto
