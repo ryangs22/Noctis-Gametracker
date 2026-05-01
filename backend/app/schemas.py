@@ -25,6 +25,7 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
+# HERANÇA ABSTRATA (Molde base)
 class GameBase(BaseModel):
     title: str
     platform: str
@@ -89,6 +90,7 @@ class UserGameResponse(BaseModel):
 # SCHEMAS PARA AS LISTAS
 # ---------------------------------------------------------
 
+# HERANÇA ABSTRATA (Molde base)
 class ListaBase(BaseModel):
     list_id: str
     nome: str
